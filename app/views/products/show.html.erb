@@ -1,0 +1,62 @@
+<p>
+  <%= image_tag @product.image.url(:thumb) %>
+</p>
+
+
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= number_to_currency (@product.price) %>
+</p>
+
+
+<%if @product.quantity < 5 && @product.quantity >= 1 %>
+<p>
+  <strong>Order now! Only <%= @product.quantity %> left in stock.</strong>
+</p>
+<% elsif @product.quantity == 0 %>
+  <p>Sold Out. More in stock soon!</p>
+<% end %>
+
+<p>
+  <strong>Description:</strong>
+  <%= @product.description %>
+</p>
+
+<p>
+  <strong>Brand:</strong>
+  <%= @product.brand %>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @product.rating %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @product.category.name %>
+</p>
+
+<% if notice != nil %>
+  <p id="notice" class= "alert alert-danger"><%= notice %></p>
+<% end %>
+
+<% if @product.quantity > 0 %>
+<p>
+  <%= form_tag(add_to_cart_path) do %>
+    <%= number_field_tag :qty, nil, min: 1, placeholder: "How many?" %>
+    <%= hidden_field_tag :product_id, @product.id %>
+    <%= submit_tag "Add to cart", class: "btn btn-info" %>
+  <% end %>
+</p>
+<% end %>
+
+<% if can? :update, @product %>
+  <%= link_to 'Edit', edit_product_path(@product) %> |
+  <%= link_to 'Back', products_path %>
+<% end %>

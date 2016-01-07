@@ -1,0 +1,46 @@
+<div class="row">
+ <% @products.each do |product| %>
+   <div class="col-md-4">
+     <div class="well center-it">
+       <p><%= image_tag product.image.url(:thumb) %></p>
+       <h3><%= link_to product.name, product %></h3>
+       <p><%= number_to_currency product.price %></p>
+       <p>
+         <a href="#" data-toggle="modal" data-target="#myModal_<%= product.id %>">
+           <span class="glyphicon glyphicon-plus"></span> Quick info
+         </a>
+       </p>
+     </div>
+   </div>
+   <div class="modal fade" id="myModal_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title" id="myModalLabel"><%= product.name %></h4>
+         </div>
+         <div class="modal-body center">
+           <p><%= image_tag product.image.url(:thumb) %></p>
+           <p><%= product.description %></p>
+           <p><%= number_to_currency product.price %></p>
+           <p><%= link_to "More Information", product, class:"btn btn-primary"%></p>
+        </div>
+         <div class="modal-footer">
+           <% if product.quantity > 0 %>
+              <p>
+                <%= form_tag(add_to_cart_path, class: "form-inline") do %>
+                  <%= number_field_tag :qty, nil, min: 1, placeholder: "How many?", class: "form-control" %>
+                  <%= hidden_field_tag :product_id, product.id %>
+                  <%= submit_tag "Add to Cart", class: "btn btn-danger" %> 
+                <% end %>
+              </p>
+            <% else %>
+              <p>Currently Out of Stock. Check Back Soon!</p>
+            <% end %>
+        
+         </div>
+       </div>
+     </div>
+   </div>
+ <% end %>
+</div>

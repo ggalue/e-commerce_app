@@ -1,0 +1,51 @@
+<h1>My Cart</h1>
+
+<%if @line_items.empty? %>
+<p>Your cart is empty.</p>
+<% else %>
+<div>
+	<% @line_items.each do |line_item| %>
+		<ul>
+			<!-- Name of product you are buying -->
+			<li><%= line_item.product.name %></li>
+			<!-- Price per item -->
+			<li><%= number_to_currency line_item.product.price %>/ea.</li>
+			<!-- Quantity you want to purchase -->
+			<div id="current-quantity-<%= line_item.id%>">
+				<li>Qty: <%= line_item.quantity %></li>
+			</div>
+			<p id="notice"><%= notice %></p>
+			<div id="change-quantity-<%= line_item.id%>" class="invisible">
+				<%= form_tag(edit_line_item_path, class: "inline-form") do %>
+				<%= number_field_tag :qty, line_item.quantity %>
+				<%= hidden_field_tag :id, line_item.id %>
+				<%= submit_tag "Change quantity", class: "btn btn-sm btn-primary" %>
+				<% end %>
+		</div>
+			<!-- Total of your purchase -->
+			<li>Subtotal: <%= number_to_currency line_item.line_item_total %></li>
+			<p>
+				<a href="#" id="edit_qty_<%= line_item.id %>">Edit Quantity</a> 
+			</p>
+			<li><%= link_to "Remove Item from Cart", remove_from_cart_path(id:line_item.id) %></li>
+		</ul>
+	<script>
+			$(document).ready(function(){
+		$('#edit_qty_<%= line_item.id %>').click(function(){
+			$('#current-quantity-<%= line_item.id %>').addClass('invisible');
+			$('#change-quantity-<%= line_item.id %>').removeClass('invisible');
+		});
+	});
+	</script>
+	<% end %>
+</div>
+<% end %>
+
+<div>
+	<p>
+		<%= link_to "Continue Shopping", root_path, class: "btn btn-info" %>
+	</p>
+	<p>
+		<%= link_to "Proceed to Checkout", checkout_path, class: "btn btn-success" %>
+	</p>
+</div>

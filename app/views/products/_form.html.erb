@@ -1,0 +1,44 @@
+<%= form_for(@product) do |f| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, placeholder: "Product Name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :price %><br>
+    <%= f.text_field :price %>
+  </div>
+  <div class="form-group">
+    <%= f.label :quantity %><br>
+    <%= f.number_field :quantity %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %><br>
+    <%= f.text_area :description, placeholder: "Product description", class: "form-control"  %>
+  </div>
+  <div class="form-group">
+    <%= f.label :brand %><br>
+    <%= f.text_field :brand, placeholder: "Brand Name", class: "form-control"%>
+  </div>
+  <div class="form-group">
+    <%= f.select(:category_id, @categories.collect {|c| [c.name, c.id]}, {include_blank: "Please select a category"}) %>
+  </div>
+  <div class="form-group">
+    <strong>Upload Image:</strong>
+    <%=f.file_field :image %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-success" %>
+  </div>
+<% end %>

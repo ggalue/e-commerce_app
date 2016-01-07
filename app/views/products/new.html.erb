@@ -1,0 +1,11 @@
+<% if can? :update, @product %>
+
+<h1>New Product</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back', products_path %>
+
+<% else %>
+  <%= render 'notallowed' %>
+<% end %>
